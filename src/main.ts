@@ -1,7 +1,7 @@
 export {}
 
 window.addEventListener('input', (event) => { console.log(event) })
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const _sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 await _sleep(2000);
 const input = document.querySelector('.ql-editor')
@@ -9,17 +9,19 @@ const button = document.querySelector('[data-qa="texty_send_button"]')
 
 const timeBox = document.createElement('div')
 
-let startTime = null
-let timerId = null
+let startTime: Date | undefined = undefined
+let timerId: number | undefined = undefined
 
 function reset() {
-  startTime = null
+  startTime = undefined
   clearInterval(timerId)
   timeBox.textContent = ''
 }
 
 const showInterval = () => {
-  timeBox.textContent = parseInt((new Date() - startTime) / 1000)
+  if (!startTime) return
+  const timeInterval = Math.round((new Date().getTime() - startTime.getTime()) / 1000)
+  timeBox.textContent = timeInterval.toString()
 }
 
 const onInput = () => {
